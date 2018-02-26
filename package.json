@@ -4,8 +4,8 @@
   "description": "A Node boilerplate (ES7)",
   "main": "bin/server.js",
   "scripts": {
-    "start": "node bin/server",
-    "dev": "nodemon bin/server",
+    "start": "node server",
+    "dev": "nodemon server",
     "test": "mocha"
   },
   "repository": {
