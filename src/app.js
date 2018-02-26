@@ -10,9 +10,11 @@ const productRoute = require('./routes/product')
 const app = express()
 
 // Database
-mongoose.connect('mongodb://renan:renan@ds247698.mlab.com:47698/nodestore')
-  .then(() => console.log('Database connected'))
-  .catch(err => console.error(err.message))
+if (process.env.NODE_ENV !== 'test') {
+  mongoose.connect('mongodb://renan:renan@ds247698.mlab.com:47698/nodestore')
+    .then(() => console.log('Database connected'))
+    .catch(err => console.error(err.message))
+}
 
 // Use body parser
 app.use(bodyParser.json())
