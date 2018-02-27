@@ -11,12 +11,16 @@ const expect = chai.expect
 
 chai.use(chaiHttp)
 
-before(done => {
+before(function (done) {
+  this.timeout(5000)
   mongoose.connect('mongodb://renan:renan@ds247698.mlab.com:47698/nodestore', done)
 })
 
-describe('REST product route', () => {
+describe('REST product route', function () {
+  this.timeout(5000)
+
   it('should return active products', () => {
+
     return chai.request(app)
       .get('/api/products')
       .then(response => {
