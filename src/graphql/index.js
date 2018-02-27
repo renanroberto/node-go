@@ -42,27 +42,6 @@ class Product {
   }
 }
 
-const tests = [
-  {
-    _id: '01',
-    name: 'Tenis',
-    price: 100,
-    active: true
-  },
-  {
-    _id: '02',
-    name: 'Blusa',
-    price: 99.1,
-    active: true
-  },
-  {
-    _id: '03',
-    name: 'Calça',
-    price: 57.97,
-    active: true
-  }
-]
-
 exports.root = {
   products () {
     return productModel.find({ active: true })
