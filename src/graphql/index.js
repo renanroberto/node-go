@@ -26,7 +26,7 @@ class Product {
   }
 
   id () {
-    return this.product.id
+    return this.product._id
   }
 
   name () {
@@ -44,19 +44,19 @@ class Product {
 
 const tests = [
   {
-    id: '01',
+    _id: '01',
     name: 'Tenis',
     price: 100,
     active: true
   },
   {
-    id: '02',
+    _id: '02',
     name: 'Blusa',
     price: 99.1,
     active: true
   },
   {
-    id: '03',
+    _id: '03',
     name: 'Calça',
     price: 57.97,
     active: true
@@ -65,6 +65,10 @@ const tests = [
 
 exports.root = {
   products () {
-    return tests.map(test => new Product(test))
+    return productModel.find({ active: true })
+      .then(products => {
+        return products.map(product => new Product(product))
+      })
+      .catch(err => console.error(err.message))
   }
 }
