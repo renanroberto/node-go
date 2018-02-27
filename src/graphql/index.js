@@ -8,6 +8,11 @@ const mongoose = require('mongoose')
 const productModel = mongoose.model('Product')
 
 exports.schema = buildSchema(`
+  input ProductInput {
+    name: String
+    price: Float
+  }
+
   type Product {
     id: String
     name: String
@@ -17,6 +22,10 @@ exports.schema = buildSchema(`
 
   type Query {
     products: [Product]
+  }
+
+  type Mutation {
+    createProduct(input: ProductInput): Product
   }
 `)
 
@@ -49,5 +58,21 @@ exports.root = {
         return products.map(product => new Product(product))
       })
       .catch(err => console.error(err.message))
+  },
+
+  createProduct ({ input }) {
+    const product = new productModel({
+      name: input.name,
+      price: input.price,
+      active: true
+    })
+
+    return product.save()
+      .then(() => {
+        return new Product(product)
+      })
+      .catch(err => {
+        return null
+      })
   }
 }
