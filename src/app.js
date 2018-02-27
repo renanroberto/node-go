@@ -3,6 +3,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const graphqlHttp = require('express-graphql')
+const graphql = require('./graphql')
 
 const Product = require('./models/product')
 const productRoute = require('./routes/product')
@@ -26,6 +28,12 @@ app.use(view)
 
 // Routes
 app.use('/api/products', productRoute)
+
+app.use('/api/graphql', graphqlHttp({
+  schema: graphql.schema,
+  rootValue: graphql.root,
+  graphiql: true
+}))
 
 //Page not found
 app.use((req, res) => {
