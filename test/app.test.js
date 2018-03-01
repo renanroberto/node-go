@@ -19,6 +19,10 @@ before(function (done) {
   mongoose.connect('mongodb://renan:renan@ds259865.mlab.com:59865/db-test', done)
 })
 
+after(done => {
+  Product.remove({}, done)
+})
+
 describe('REST API', function () {
   this.timeout(5000)
 
@@ -88,10 +92,10 @@ describe('GraphQL API', function () {
       .post('/api/graphql')
       .query({ query, variables })
       .then(response => {
-        expect(response).to.have.status(200)
-        expect(response.body.data).to.be.a('object')
-
         const product = response.body.data.createProduct
+
+        expect(response).to.have.status(200)
+        expect(product).to.be.a('object')
 
         expect(product).to.have.property('id').that.is.a('string')
         expect(product).to.have.property('name').that.is.a('string')
