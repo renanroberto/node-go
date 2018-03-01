@@ -32,7 +32,7 @@ app.use('/api/products', productRoute)
 app.use('/api/graphql', graphqlHttp({
   schema: graphql.schema,
   rootValue: graphql.root,
-  graphiql: true
+  graphiql: process.env.NODE_ENV === 'development'
 }))
 
 //Page not found

@@ -45,7 +45,7 @@ exports.post = (req, res) => {
         action: 'Save product',
         message: 'Error on save product',
         success: false,
-        error: err
+        error: err.message
       })
     })
 }
