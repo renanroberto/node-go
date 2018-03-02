@@ -21,11 +21,13 @@ exports.schema = buildSchema(`
   }
 
   type Query {
-    products: [Product]
+    products(count: Int, page: Int): [Product]
+    product(id: String!): Product
   }
 
   type Mutation {
     createProduct(input: ProductInput): Product
+    removeProduct(id: String): String
   }
 `)
 
@@ -52,12 +54,24 @@ class Product {
 }
 
 exports.root = {
-  products () {
+  products ({ count, page }) {
     return productModel.find({ active: true })
       .then(products => {
-        return products.map(product => new Product(product))
+        if (!count) count = products.length
+        if (!page) page = 1
+
+        page = (page - 1) * count
+
+        return products.map(product => new Product(product)).slice(page, count + page)
       })
       .catch(err => console.error(err.message))
+  },
+
+  product ({ id }) {
+    return productModel.find({ _id: id })
+      .then(product => {
+        return new Product(product[0])
+      })
   },
 
   createProduct ({ input }) {
@@ -74,5 +88,12 @@ exports.root = {
       .catch(err => {
         return null
       })
+  },
+
+  removeProduct ({ id }) {
+    return productModel.remove({ _id: id }, err => {
+      if (err) console.error(err.message)
+      return "Product deleted"
+    })
   }
 }
